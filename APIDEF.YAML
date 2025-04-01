@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  title: COBOL Banking CRM API
+  version: 1.0.0
+  description: API definitions for accessing core COBOL-based banking CRM functions through z/OS Connect.
+
+paths:
+  /customer/{customerId}:
+    get:
+      summary: Retrieve Customer Profile
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerProfile'
+
+  /relationship:
+    post:
+      summary: Link a Customer Relationship
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelationshipLinkRequest'
+      responses:
+        '200':
+          description: Relationship linked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipLinkResponse'
+
+  /interaction:
+    post:
+      summary: Log a Customer Interaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InteractionLogRequest'
+      responses:
+        '200':
+          description: Interaction logged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteractionLogResponse'
+
+  /account/{accountId}/balance:
+    get:
+      summary: Get Account Balance
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account balance returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+
+components:
+  schemas:
+    CustomerProfile:
+      type: object
+      properties:
+        customerId:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        segment:
+          type: string
+        riskFlag:
+          type: string
+
+    RelationshipLinkRequest:
+      type: object
+      properties:
+        primaryCustomerId:
+          type: string
+        relatedCustomerId:
+          type: string
+        relationshipType:
+          type: string
+        employeeId:
+          type: string
+
+    RelationshipLinkResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+
+    InteractionLogRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+        employeeId:
+          type: string
+        interactionType:
+          type: string
+        notes:
+          type: string
+
+    InteractionLogResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+
+    AccountBalance:
+      type: object
+      properties:
+        accountId:
+          type: string
+        accountType:
+          type: string
+        currentBalance:
+          type: number
+          format: float

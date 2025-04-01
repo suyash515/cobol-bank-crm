@@ -1,0 +1,80 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. MARKETSEG.
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. IBM-Z16.
+       OBJECT-COMPUTER. IBM-Z16.
+
+       DATA DIVISION.
+
+       WORKING-STORAGE SECTION.
+
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+
+       EXEC SQL BEGIN DECLARE SECTION END-EXEC.
+       01  HV-CUSTOMER-ID        PIC X(10).
+       01  HV-BALANCE            PIC S9(9)V99 COMP-3.
+       01  HV-AGE                PIC 9(3).
+       01  HV-SEGMENT            PIC X(20).
+       EXEC SQL END DECLARE SECTION END-EXEC.
+
+       01  WS-SEGMENT-COUNT      PIC 9(5) VALUE ZERO.
+       01  WS-RESPONSE           PIC X(100).
+
+       PROCEDURE DIVISION.
+
+       MAIN-LOGIC.
+           DISPLAY "STARTING CUSTOMER SEGMENTATION PROCESS"
+
+           EXEC SQL
+               DECLARE CURSOR_CUST CURSOR FOR
+               SELECT CUSTOMER_ID, AGE, TOTAL_BALANCE
+               FROM CUSTOMER_MASTER
+           END-EXEC.
+
+           EXEC SQL OPEN CURSOR_CUST END-EXEC.
+
+           PERFORM UNTIL SQLCODE NOT = 0
+               EXEC SQL
+                   FETCH CURSOR_CUST INTO
+                       :HV-CUSTOMER-ID,
+                       :HV-AGE,
+                       :HV-BALANCE
+               END-EXEC
+
+               IF SQLCODE = 0
+                   PERFORM DETERMINE-SEGMENT
+                   PERFORM UPDATE-SEGMENT
+               END-IF
+           END-PERFORM.
+
+           EXEC SQL CLOSE CURSOR_CUST END-EXEC.
+
+           DISPLAY "SEGMENTATION COMPLETE. CUSTOMERS SEGMENTED: " WS-SEGMENT-COUNT
+           GOBACK.
+
+       DETERMINE-SEGMENT.
+           IF HV-BALANCE > 100000.00
+               MOVE 'HIGH_NET_WORTH' TO HV-SEGMENT
+           ELSE IF HV-AGE < 25
+               MOVE 'STUDENT' TO HV-SEGMENT
+           ELSE IF HV-AGE > 65
+               MOVE 'RETIREE' TO HV-SEGMENT
+           ELSE
+               MOVE 'STANDARD' TO HV-SEGMENT
+           END-IF.
+
+       UPDATE-SEGMENT.
+           EXEC SQL
+               UPDATE CUSTOMER_MASTER
+               SET SEGMENT = :HV-SEGMENT
+               WHERE CUSTOMER_ID = :HV-CUSTOMER-ID
+           END-EXEC.
+
+           IF SQLCODE = 0
+               ADD 1 TO WS-SEGMENT-COUNT
+           ELSE
+               DISPLAY "ERROR UPDATING SEGMENT FOR CUSTOMER " HV-CUSTOMER-ID
+               DISPLAY "SQLCODE: " SQLCODE
+           END-IF.

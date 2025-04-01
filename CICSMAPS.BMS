@@ -1,0 +1,41 @@
+CICSMAPS  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,TERM=3270,DSATTS=COLOR
+
+*--------------------------------------------------------------------*
+*  CUSTOMER PROFILE SCREEN                                           *
+*--------------------------------------------------------------------*
+CUSTSCRN DFHMDI SIZE=(24,80),LINE=1,COLUMN=1
+
+CUSTMAP  DFHMDF POS=(01,02),LENGTH=15,ATTRB=(PROT,NORM),INITIAL='Customer ID:'
+CUSTID   DFHMDF POS=(01,18),LENGTH=10,ATTRB=(UNPROT,BRT),        -
+         INITIAL='          ',                                   -
+         FIELD=CUSTID-FLD
+
+CUSTNM-L DFHMDF POS=(02,02),LENGTH=15,ATTRB=(PROT,NORM),INITIAL='Name:'
+CUSTNM   DFHMDF POS=(02,18),LENGTH=40,ATTRB=(UNPROT,BRT),        -
+         INITIAL='                                        ',     -
+         FIELD=CUSTNM-FLD
+
+ADDR-L   DFHMDF POS=(03,02),LENGTH=15,ATTRB=(PROT,NORM),INITIAL='Address:'
+ADDR     DFHMDF POS=(03,18),LENGTH=50,ATTRB=(UNPROT,BRT),        -
+         INITIAL='                                                  ', -
+         FIELD=ADDR-FLD
+
+PHONE-L  DFHMDF POS=(04,02),LENGTH=15,ATTRB=(PROT,NORM),INITIAL='Phone:'
+PHONE    DFHMDF POS=(04,18),LENGTH=15,ATTRB=(UNPROT,BRT),        -
+         INITIAL='               ',                              -
+         FIELD=PHONE-FLD
+
+EMAIL-L  DFHMDF POS=(05,02),LENGTH=15,ATTRB=(PROT,NORM),INITIAL='Email:'
+EMAIL    DFHMDF POS=(05,18),LENGTH=40,ATTRB=(UNPROT,BRT),        -
+         INITIAL='                                        ',     -
+         FIELD=EMAIL-FLD
+
+SEG-L    DFHMDF POS=(06,02),LENGTH=15,ATTRB=(PROT,NORM),INITIAL='Segment:'
+SEGMENT  DFHMDF POS=(06,18),LENGTH=20,ATTRB=(PROT,BRT),          -
+         INITIAL='                    '
+
+MSG-LINE DFHMDF POS=(23,02),LENGTH=76,ATTRB=(PROT,NORM),         -
+         INITIAL='                                                                    ', -
+         FIELD=MSG-FLD
+
+         DFHMSD TYPE=FINAL

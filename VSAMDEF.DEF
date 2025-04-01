@@ -1,0 +1,31 @@
+* VSAMDEF.DEF
+* VSAM Definitions for COBOL-Based Banking CRM System
+
+DEFINE CLUSTER (NAME(BANKING.AUDIT.LOG)         -
+                RECORDS(10000 500)              -
+                VOLUMES(VOL001)                 -
+                INDEXED                         -
+                KEYS(10 0)                      -
+                RECORDSIZE(256 256)             -
+                CISZ(4096)                      -
+                FREESPACE(10 10)                -
+                REUSE                           -
+                SHAREOPTIONS(2 3))              -
+       DATA     (NAME(BANKING.AUDIT.LOG.DATA))  -
+       INDEX    (NAME(BANKING.AUDIT.LOG.INDEX))
+
+DEFINE CLUSTER (NAME(BANKING.ACCESS.LOG)         -
+                RECORDS(10000 500)               -
+                VOLUMES(VOL001)                  -
+                INDEXED                          -
+                KEYS(10 0)                       -
+                RECORDSIZE(256 256)              -
+                CISZ(4096)                       -
+                FREESPACE(10 10)                 -
+                REUSE                            -
+                SHAREOPTIONS(2 3))               -
+       DATA     (NAME(BANKING.ACCESS.LOG.DATA))  -
+       INDEX    (NAME(BANKING.ACCESS.LOG.INDEX))
+
+* Additional VSAM datasets can be defined similarly
+* Adjust RECORDS, KEYS, and RECORDSIZE based on real data needs

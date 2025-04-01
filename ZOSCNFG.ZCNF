@@ -1,0 +1,75 @@
+{
+  "zosConnect": {
+    "version": "1.0",
+    "services": [
+      {
+        "name": "GetCustomerProfile",
+        "request": {
+          "method": "GET",
+          "uriPattern": "/customer/{customerId}"
+        },
+        "response": {
+          "mediaType": "application/json"
+        },
+        "operation": {
+          "moduleName": "CUSTMSTR",
+          "programName": "CUSTMSTR",
+          "type": "CICS",
+          "requestMapping": "GetCustomerProfileRequest",
+          "responseMapping": "GetCustomerProfileResponse"
+        }
+      },
+      {
+        "name": "LinkCustomerRelationship",
+        "request": {
+          "method": "POST",
+          "uriPattern": "/relationship"
+        },
+        "response": {
+          "mediaType": "application/json"
+        },
+        "operation": {
+          "moduleName": "CUSTREL",
+          "programName": "CUSTREL",
+          "type": "CICS",
+          "requestMapping": "LinkCustomerRelationshipRequest",
+          "responseMapping": "LinkCustomerRelationshipResponse"
+        }
+      },
+      {
+        "name": "LogCustomerInteraction",
+        "request": {
+          "method": "POST",
+          "uriPattern": "/interaction"
+        },
+        "response": {
+          "mediaType": "application/json"
+        },
+        "operation": {
+          "moduleName": "CUSTHIST",
+          "programName": "CUSTHIST",
+          "type": "CICS",
+          "requestMapping": "LogInteractionRequest",
+          "responseMapping": "LogInteractionResponse"
+        }
+      },
+      {
+        "name": "GetAccountBalance",
+        "request": {
+          "method": "GET",
+          "uriPattern": "/account/{accountId}/balance"
+        },
+        "response": {
+          "mediaType": "application/json"
+        },
+        "operation": {
+          "moduleName": "BALINQUIR",
+          "programName": "BALINQUIR",
+          "type": "CICS",
+          "requestMapping": "AccountBalanceRequest",
+          "responseMapping": "AccountBalanceResponse"
+        }
+      }
+    ]
+  }
+}
